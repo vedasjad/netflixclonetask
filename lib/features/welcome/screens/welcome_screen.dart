@@ -80,8 +80,8 @@ class WelcomeScreen extends StatelessWidget {
             Padding(
               padding: EdgeInsets.symmetric(vertical: 10.h),
               child: ElevatedButton(
-                onPressed: () =>
-                    AppNavigators.animatedPushTo(context, const StageScreen()),
+                onPressed: () => AppNavigators.animatedPushAndRemoveUntil(
+                    context, const StageScreen()),
                 style: ButtonStyle(
                   fixedSize: MaterialStatePropertyAll(Size(343.w, 44.h)),
                   shape: const MaterialStatePropertyAll(
