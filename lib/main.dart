@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:netflixclonetask/common/dimensions/app_dimensions.dart';
 import 'package:netflixclonetask/features/stage/screens/stage_screen.dart';
 
 void main() {
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(375, 812),
+      designSize: AppDimensions.screenSize,
       minTextAdapt: true,
       builder: (context, child) {
         return MaterialApp(
