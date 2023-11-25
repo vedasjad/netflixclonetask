@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:netflixclonetask/common/dimensions/app_dimensions.dart';
-import 'package:netflixclonetask/features/stage/screens/stage_screen.dart';
+import 'package:netflixclonetask/features/welcome/screens/welcome_screen.dart';
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));
@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
             fontFamily: "NetflixSans",
             useMaterial3: true,
           ),
-          home: const StageScreen(),
+          home: const WelcomeScreen(),
         );
       },
     );

@@ -54,37 +54,40 @@ class HomeScreen extends ConsumerWidget {
           ],
         ),
         body: ref.watch(showInfosProvider).when(
-              loading: () => const Center(child: CircularProgressIndicator()),
+              loading: () => const Center(
+                  child: CircularProgressIndicator(
+                color: AppColors.red,
+              )),
               error: (error, trace) => Center(child: Text(error.toString())),
               data: (showInfos) {
-                return Stack(
-                  children: [
-                    Image.network(
-                      showInfos[1].show!.image!.original!,
-                      height: 538.h,
-                      width: AppDimensions.screenWidth.w,
-                      fit: BoxFit.cover,
-                    ),
-                    Container(
-                      height: AppDimensions.screenHeight.h,
-                      width: AppDimensions.screenWidth.w,
-                      decoration: const BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: FractionalOffset.topCenter,
-                          end: FractionalOffset.bottomCenter,
-                          colors: [
-                            AppColors.black,
-                            Colors.transparent,
-                            AppColors.black,
-                          ],
-                          stops: [0.005, 0.5, 0.8],
+                return SizedBox(
+                  height: AppDimensions.screenHeight,
+                  child: SingleChildScrollView(
+                    child: Stack(
+                      children: [
+                        Image.network(
+                          showInfos[1].show!.image!.original!,
+                          height: 538.h,
+                          width: AppDimensions.screenWidth.w,
+                          fit: BoxFit.cover,
                         ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: AppDimensions.screenHeight,
-                      child: SingleChildScrollView(
-                        child: Column(
+                        Container(
+                          height: AppDimensions.screenHeight.h,
+                          width: AppDimensions.screenWidth.w,
+                          decoration: const BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: FractionalOffset.topCenter,
+                              end: FractionalOffset.bottomCenter,
+                              colors: [
+                                AppColors.black,
+                                Colors.transparent,
+                                AppColors.black,
+                              ],
+                              stops: [0.005, 0.5, 0.8],
+                            ),
+                          ),
+                        ),
+                        Column(
                           children: [
                             SizedBox(
                               height: 92.h,
@@ -425,9 +428,9 @@ class HomeScreen extends ConsumerWidget {
                             )
                           ],
                         ),
-                      ),
+                      ],
                     ),
-                  ],
+                  ),
                 );
               },
             ),
