@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,6 +10,7 @@ import 'package:netflixclonetask/common/navigators/navigators.dart';
 import 'package:netflixclonetask/features/details/screens/details_screen.dart';
 import 'package:netflixclonetask/features/home/controllers/home_controller.dart';
 
+import '../../../common/widgets/show_card.dart';
 import '../../../models/show_info.dart' as show_info;
 
 class HomeScreen extends ConsumerWidget {
@@ -297,113 +300,9 @@ class HomeScreen extends ConsumerWidget {
                                                 null) {
                                           return const SizedBox();
                                         } else {
-                                          return Container(
-                                            height: 188,
-                                            width: 106,
-                                            margin: (index == 0)
-                                                ? EdgeInsets.fromLTRB(
-                                                    10.w, 0, 5.w, 0)
-                                                : EdgeInsets.symmetric(
-                                                    horizontal: 10.w),
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(4.r),
-                                              color: AppColors.black,
-                                            ),
-                                            child: Column(
-                                              children: [
-                                                Stack(
-                                                  alignment: Alignment.center,
-                                                  children: [
-                                                    ClipRRect(
-                                                      borderRadius:
-                                                          BorderRadius.only(
-                                                              topRight: Radius
-                                                                  .circular(
-                                                                      4.r),
-                                                              topLeft: Radius
-                                                                  .circular(
-                                                                      4.r)),
-                                                      child: Image.network(
-                                                        showInfos[index]
-                                                            .show!
-                                                            .image!
-                                                            .medium!,
-                                                        height: 152.h,
-                                                        width: 106.w,
-                                                        fit: BoxFit.fill,
-                                                      ),
-                                                    ),
-                                                    SvgPicture.asset(
-                                                      "assets/images/icons/name=play-large.svg",
-                                                      height: 54.h,
-                                                      width: 54.w,
-                                                    ),
-                                                    SizedBox(
-                                                      height: 152.h,
-                                                      width: 106.w,
-                                                      child: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .start,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Padding(
-                                                            padding: EdgeInsets
-                                                                .symmetric(
-                                                                    horizontal:
-                                                                        3.w,
-                                                                    vertical:
-                                                                        3.h),
-                                                            child: Image.asset(
-                                                              "assets/images/logos/netflix-logo-small.png",
-                                                              height: 20.h,
-                                                              width: 10.w,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                Container(
-                                                  padding: EdgeInsets.symmetric(
-                                                      horizontal: 5.w),
-                                                  height: 33.h,
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      SvgPicture.asset(
-                                                        "assets/images/icons/name=info.svg",
-                                                        height: 20.h,
-                                                        width: 20.w,
-                                                        colorFilter:
-                                                            const ColorFilter
-                                                                .mode(
-                                                          AppColors.greyLight1,
-                                                          BlendMode.srcIn,
-                                                        ),
-                                                      ),
-                                                      SvgPicture.asset(
-                                                        "assets/images/icons/name=more.svg",
-                                                        height: 20.h,
-                                                        width: 20.w,
-                                                        colorFilter:
-                                                            const ColorFilter
-                                                                .mode(
-                                                          AppColors.greyLight1,
-                                                          BlendMode.srcIn,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                )
-                                              ],
-                                            ),
+                                          return RecentlyWatchedShowCard(
+                                            index: index,
+                                            showInfo: showInfos[index],
                                           );
                                         }
                                       },
@@ -436,6 +335,121 @@ class HomeScreen extends ConsumerWidget {
                 );
               },
             ),
+      ),
+    );
+  }
+}
+
+class RecentlyWatchedShowCard extends StatelessWidget {
+  const RecentlyWatchedShowCard({
+    required this.index,
+    required this.showInfo,
+    super.key,
+  });
+
+  final int index;
+  final show_info.ShowInfo showInfo;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => AppNavigators.animatedPush(
+          context, DetailsScreen(showInfo: showInfo)),
+      child: Container(
+        height: 188,
+        width: 106,
+        margin: (index == 0)
+            ? EdgeInsets.fromLTRB(10.w, 0, 5.w, 0)
+            : EdgeInsets.symmetric(horizontal: 10.w),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(4.r),
+          color: AppColors.black,
+        ),
+        child: Column(
+          children: [
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(4.r),
+                      topLeft: Radius.circular(4.r)),
+                  child: Image.network(
+                    showInfo.show!.image!.medium!,
+                    height: 152.h,
+                    width: 106.w,
+                    fit: BoxFit.fill,
+                  ),
+                ),
+                SvgPicture.asset(
+                  "assets/images/icons/name=play-large.svg",
+                  height: 54.h,
+                  width: 54.w,
+                ),
+                SizedBox(
+                  height: 152.h,
+                  width: 106.w,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 3.w, vertical: 3.h),
+                        child: Image.asset(
+                          "assets/images/logos/netflix-logo-small.png",
+                          height: 20.h,
+                          width: 10.w,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            Stack(
+              children: [
+                Container(
+                  height: 2.h,
+                  color: AppColors.white,
+                  width: 106.w,
+                ),
+                Container(
+                  height: 2.h,
+                  color: AppColors.red,
+                  width: 40.w + Random().nextInt((60 + 1) - 10).toDouble().w,
+                ),
+              ],
+            ),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 5.w),
+              height: 33.h,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SvgPicture.asset(
+                    "assets/images/icons/name=info.svg",
+                    height: 20.h,
+                    width: 20.w,
+                    colorFilter: const ColorFilter.mode(
+                      AppColors.greyLight1,
+                      BlendMode.srcIn,
+                    ),
+                  ),
+                  SvgPicture.asset(
+                    "assets/images/icons/name=more.svg",
+                    height: 20.h,
+                    width: 20.w,
+                    colorFilter: const ColorFilter.mode(
+                      AppColors.greyLight1,
+                      BlendMode.srcIn,
+                    ),
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -495,70 +509,6 @@ class ContentRow extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-}
-
-class ShowCard extends StatelessWidget {
-  const ShowCard({
-    super.key,
-    required this.showInfo,
-    required this.index,
-  });
-
-  final show_info.ShowInfo showInfo;
-  final int index;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => AppNavigators.animatedPush(
-        context,
-        DetailsScreen(showInfo: showInfo),
-      ),
-      child: Container(
-        height: 152,
-        width: 106,
-        margin: (index == 0)
-            ? EdgeInsets.fromLTRB(10.w, 0, 5.w, 0)
-            : EdgeInsets.symmetric(horizontal: 10.w),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(4.r),
-        ),
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(4.r),
-              child: Image.network(
-                showInfo.show!.image!.medium!,
-                height: 152.h,
-                width: 106.w,
-                fit: BoxFit.fill,
-              ),
-            ),
-            SizedBox(
-              height: 152.h,
-              width: 106.w,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 3.w, vertical: 3.h),
-                    child: Image.asset(
-                      "assets/images/logos/netflix-logo-small.png",
-                      height: 20.h,
-                      width: 10.w,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }

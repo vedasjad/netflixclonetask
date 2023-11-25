@@ -3,8 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:netflixclonetask/common/colors/colors.dart';
+import 'package:netflixclonetask/features/details/screens/details_screen.dart';
+import 'package:netflixclonetask/features/search/screen/search_result_screen.dart';
 import 'package:netflixclonetask/models/show_info.dart' as show_info;
 
+import '../../../common/navigators/navigators.dart';
 import '../../home/controllers/home_controller.dart';
 
 class SearchScreen extends ConsumerWidget {
@@ -17,6 +20,18 @@ class SearchScreen extends ConsumerWidget {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         title: SearchBar(
+          textStyle: const MaterialStatePropertyAll(
+            TextStyle(
+              color: AppColors.white,
+              fontWeight: FontWeight.w100,
+            ),
+          ),
+          onSubmitted: (searchTerm) => (searchTerm.isNotEmpty)
+              ? AppNavigators.animatedPush(
+                  context,
+                  SearchResultScreen(searchTerm: searchTerm),
+                )
+              : (),
           leading: Padding(
             padding: EdgeInsets.only(top: 3.h),
             child: SvgPicture.asset(
@@ -105,89 +120,93 @@ class TopSearchedShowView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: 5.h),
-      height: 54.h,
-      width: 359.w,
-      child: ListTile(
-        leading: Container(
-          height: 54.h,
-          width: 96.w,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(4.r),
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(4.r),
-            child: Stack(
-              children: [
-                Image.network(
-                  showInfo.show!.image!.medium!,
-                  height: 54.h,
-                  width: 96.w,
-                  fit: BoxFit.fitWidth,
-                ),
-                (showInfo.show!.name![4] == "R" ||
-                        showInfo.show!.name![4] == "W" ||
-                        showInfo.show!.name![4] == "T")
-                    ? Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          SvgPicture.asset(
-                            "assets/images/logos/top-10.svg",
-                            height: 16.h,
-                            width: 11.w,
-                          ),
-                        ],
-                      )
-                    : const SizedBox(),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 3.w, vertical: 3.h),
-                      child: Image.asset(
-                        "assets/images/logos/netflix-logo-small.png",
-                        height: 15.h,
-                        width: 10.w,
-                        fit: BoxFit.contain,
-                      ),
-                    ),
-                  ],
-                ),
-                (showInfo.show!.name![4] == "A")
-                    ? Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(bottom: 3.h),
-                            child: SvgPicture.asset(
-                              "assets/images/logos/new-episodes.svg",
-                              height: 11.h,
-                              width: 160.w,
-                              fit: BoxFit.contain,
+    return GestureDetector(
+      onTap: () => AppNavigators.animatedPush(
+          context, DetailsScreen(showInfo: showInfo)),
+      child: Container(
+        margin: EdgeInsets.symmetric(vertical: 5.h),
+        height: 54.h,
+        width: 359.w,
+        child: ListTile(
+          leading: Container(
+            height: 54.h,
+            width: 96.w,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(4.r),
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(4.r),
+              child: Stack(
+                children: [
+                  Image.network(
+                    showInfo.show!.image!.medium!,
+                    height: 54.h,
+                    width: 96.w,
+                    fit: BoxFit.fitWidth,
+                  ),
+                  (showInfo.show!.name![4] == "R" ||
+                          showInfo.show!.name![4] == "W" ||
+                          showInfo.show!.name![4] == "T")
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            SvgPicture.asset(
+                              "assets/images/logos/top-10.svg",
+                              height: 16.h,
+                              width: 11.w,
                             ),
-                          ),
-                        ],
-                      )
-                    : const SizedBox(),
-              ],
+                          ],
+                        )
+                      : const SizedBox(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 3.w, vertical: 3.h),
+                        child: Image.asset(
+                          "assets/images/logos/netflix-logo-small.png",
+                          height: 15.h,
+                          width: 10.w,
+                          fit: BoxFit.contain,
+                        ),
+                      ),
+                    ],
+                  ),
+                  (showInfo.show!.name![4] == "A")
+                      ? Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(bottom: 3.h),
+                              child: SvgPicture.asset(
+                                "assets/images/logos/new-episodes.svg",
+                                height: 11.h,
+                                width: 160.w,
+                                fit: BoxFit.contain,
+                              ),
+                            ),
+                          ],
+                        )
+                      : const SizedBox(),
+                ],
+              ),
             ),
           ),
-        ),
-        minLeadingWidth: 96.w,
-        title: Text(
-          showInfo.show!.name!,
-          style: TextStyle(
-            color: AppColors.grey,
-            fontWeight: FontWeight.w700,
-            fontSize: 14.sp,
+          minLeadingWidth: 96.w,
+          title: Text(
+            showInfo.show!.name!,
+            style: TextStyle(
+              color: AppColors.grey,
+              fontWeight: FontWeight.w700,
+              fontSize: 14.sp,
+            ),
           ),
-        ),
-        trailing: SvgPicture.asset(
-          "assets/images/icons/name=play-search.svg",
-          height: 32.h,
-          width: 32.w,
+          trailing: SvgPicture.asset(
+            "assets/images/icons/name=play-search.svg",
+            height: 32.h,
+            width: 32.w,
+          ),
         ),
       ),
     );

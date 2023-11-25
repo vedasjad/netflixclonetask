@@ -259,6 +259,7 @@ class DetailsScreen extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
                 child: Text(
                   showInfo.show!.summary!,
+                  textAlign: TextAlign.left,
                   style: TextStyle(
                     color: AppColors.white,
                     fontSize: 12.sp,

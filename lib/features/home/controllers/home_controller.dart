@@ -2,8 +2,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:netflixclonetask/features/home/repositories/show_info_repository.dart';
 
 final showInfosProvider = FutureProvider((ref) {
-  final entryRepository = ref.watch(showInfoRepositoryProvider);
-  return entryRepository.allShowInfos();
+  final showInfoRepository = ref.watch(showInfoRepositoryProvider);
+  return showInfoRepository.allShowInfos();
 });
 
 final homeScreenControllerProvider = Provider((ref) {
